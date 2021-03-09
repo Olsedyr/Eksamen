@@ -31,7 +31,7 @@ player2 = Soldier(400, 200, 3)
 run = True
 while run:
 
-	
+
 	player.draw()
 	player2.draw()
 
