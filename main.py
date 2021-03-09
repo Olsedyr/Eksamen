@@ -9,10 +9,16 @@ pygame.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Game Resolution
-screen_width=800
-screen_height=600
+screen_width=1280
+screen_height=720
 screen=pygame.display.set_mode((screen_width, screen_height))
 
+# Text Renderer
+def text_format(message, textFont, textSize, textColor):
+    newFont=pygame.font.Font(textFont, textSize)
+    newText=newFont.render(message, 0, textColor)
+
+    return newText
 
 
 # Colors
@@ -24,6 +30,8 @@ green=(0, 255, 0)
 blue=(0, 0, 255)
 yellow=(255, 255, 0)
 
+# Game Fonts
+font = "Retro.ttf"
 
 
 # Game Framerate
@@ -55,7 +63,7 @@ def main_menu():
 
         # Main Menu UI
         screen.fill(blue)
-        title=text_format("Sourcecodester", font, 90, yellow)
+
         if selected=="start":
             text_start=text_format("START", font, 75, white)
         else:
@@ -65,17 +73,17 @@ def main_menu():
         else:
             text_quit = text_format("QUIT", font, 75, black)
 
-        title_rect=title.get_rect()
+
         start_rect=text_start.get_rect()
         quit_rect=text_quit.get_rect()
 
         # Main Menu Text
-        screen.blit(title, (screen_width/2 - (title_rect[2]/2), 80))
+
         screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
         screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 360))
         pygame.display.update()
         clock.tick(FPS)
-        pygame.display.set_caption("Python - Pygame Simple Main Menu Selection")
+        pygame.display.set_caption("Menu")
 
 #Initialize the Game
 main_menu()
