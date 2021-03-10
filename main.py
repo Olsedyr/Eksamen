@@ -2,6 +2,16 @@ import pygame
 from pygame.locals import *
 import os
 
+class Game():
+    def __init__(self):
+        self.tilstand = 0
+        self.menu_element = "start"
+
+
+game=Game()
+
+
+done=False
 # Game Initialization
 pygame.init()
 
@@ -9,9 +19,10 @@ pygame.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Game Resolution
-screen_width=800
-screen_height=600
+screen_width=1280
+screen_height=720
 screen=pygame.display.set_mode((screen_width, screen_height))
+bg = pygame.image.load("Pictures\Menu_wallpaper.png")
 
 # Text Renderer
 def text_format(message, textFont, textSize, textColor):
@@ -21,7 +32,7 @@ def text_format(message, textFont, textSize, textColor):
     return newText
 
 
-# Colors
+# Farver
 white=(255, 255, 255)
 black=(0, 0, 0)
 gray=(50, 50, 50)
@@ -39,36 +50,31 @@ clock = pygame.time.Clock()
 FPS=30
 
 # Main Menu
-def main_menu():
-
-    menu=True
-    selected="start"
-
-    while menu:
-        for event in pygame.event.get():
-            if event.type==pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_UP:
-                    selected="start"
-                elif event.key==pygame.K_DOWN:
-                    selected="quit"
-                if event.key==pygame.K_RETURN:
-                    if selected=="start":
-                        print("Start")
-                    if selected=="quit":
-                        pygame.quit()
-                        quit()
+def main_menu(game):
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            pygame.quit()
+            quit()
+        if event.type==pygame.KEYDOWN:
+            if event.key==pygame.K_UP:
+                game.menu_element="start"
+            elif event.key==pygame.K_DOWN:
+                game.menu_element="quit"
+            if event.key==pygame.K_RETURN:
+                if game.menu_element=="start":
+                    game.tilstand=1
+                if game.menu_element=="quit":
+                    pygame.quit()
+                    quit()
 
         # Main Menu UI
-        screen.fill(blue)
+        screen.blit(bg,(0,0))
 
-        if selected=="start":
+        if game.menu_element=="start":
             text_start=text_format("START", font, 75, white)
         else:
             text_start = text_format("START", font, 75, black)
-        if selected=="quit":
+        if game.menu_element=="quit":
             text_quit=text_format("QUIT", font, 75, white)
         else:
             text_quit = text_format("QUIT", font, 75, black)
@@ -82,10 +88,25 @@ def main_menu():
         screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
         screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 360))
         pygame.display.update()
-        clock.tick(FPS)
-        pygame.display.set_caption("Python - Pygame Simple Main Menu Selection")
+
+
+def draw_game(game):
+    pygame.event.pump()
+    screen.fill(white)
+    pygame.display.update()
+
+
+while not done:
+    if game.tilstand==0:
+        main_menu(game)
+    if game.tilstand==1:
+        draw_game(game)
+
+
+
 
 #Initialize the Game
+clock.tick(FPS)
 main_menu()
 pygame.quit()
 quit()
