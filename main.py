@@ -22,15 +22,9 @@ class Collisionbox():
 
 
 class Player():
-
     def __init__(self):
+        pass
 
-        # Load the sprite sheet.
-        self.sprite_sheet = pygame.image.load("player/playersprite.png").convert()
-        # Create a new blank image
-        self.image = pygame.display([game.screen_width, game.screen_height]).convert()
-        # Copy the sprite from the large sheet onto the smaller image
-        self.image.blit(self.sprite_sheet, (0, 0), (0, 0, game.screen_width, game.screen_height))
 
 
 
