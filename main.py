@@ -2,27 +2,51 @@ import pygame
 from pygame.locals import *
 import os
 
+
 class Game():
     def __init__(self):
         self.tilstand = 0
         self.menu_element = "start"
+        self.screen_width=1280
+        self.screen_height=720
+        self.screen=pygame.display.set_mode((self.screen_width, self.screen_height))
+
+class Treasure():
+    def __init__(self):
+        self.health = 100
+
+
+class Collisionbox():
+    def __init__(self):
+        pass
+
+class Player():
+    def __init__(self):
+        self.health = 100
+        self.image = pygame.Surface()
+
+
 
 
 game=Game()
-
+treasure=Treasure()
+collisionbox = Collisionbox()
 
 done=False
 # Game Initialization
 pygame.init()
 
+
+
+asd = pygame.mouse.get_pos()
+print(asd)
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Game Resolution
-screen_width=1280
-screen_height=720
-screen=pygame.display.set_mode((screen_width, screen_height))
+
 bg = pygame.image.load("Pictures\Menu_wallpaper.png")
+map = pygame.image.load("Pictures\map(2).png")
 
 # Text Renderer
 def text_format(message, textFont, textSize, textColor):
@@ -68,7 +92,7 @@ def main_menu(game):
                     quit()
 
         # Main Menu UI
-        screen.blit(bg,(0,0))
+        game.screen.blit(bg,(0,0))
 
         if game.menu_element=="start":
             text_start=text_format("START", font, 75, white)
@@ -85,14 +109,29 @@ def main_menu(game):
 
         # Main Menu Text
 
-        screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
-        screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 360))
+        game.screen.blit(text_start, (game.screen_width/2 - (start_rect[2]/2), 300))
+        game.screen.blit(text_quit, (game.screen_width/2 - (quit_rect[2]/2), 360))
         pygame.display.update()
 
 
 def draw_game(game):
     pygame.event.pump()
-    screen.fill(white)
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEMOTION:
+            print(pygame.mouse.get_pos())
+
+
+
+
+    game.screen.blit(map,(0,0))
+    #Platform
+    pygame.draw.rect(game.screen, white, pygame.Rect(300,470,475,10))
+
+    #floor
+    pygame.draw.rect(game.screen, white, pygame.Rect(0,705,1280,10))
+
+
+
     pygame.display.update()
 
 
@@ -105,7 +144,9 @@ while not done:
 
 
 
+
 #Initialize the Game
+
 clock.tick(FPS)
 main_menu()
 pygame.quit()
