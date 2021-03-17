@@ -89,7 +89,7 @@ class Player():
             player.walkCount += 1
         else:
             game.screen.blit(self.character,  (self.x,self.y))
-            print(self.y)
+            print(self.x,self.y)
 
 
 
@@ -200,13 +200,21 @@ def draw_game(game):
 
     if player.x < 305 and player.x > 280 and player.keys[pygame.K_UP]:
         player.y -= player.vel
+        player.left=False
+        player.right=False
+        player.walkCount = 0
     if player.x < 305 and player.x > 280 and player.keys[pygame.K_DOWN]:
         player.y += player.vel
     if player.y < 415:
         player.y = 410
     if player.y > 640:
         player.y = 640
+    if player.x > 750 and player.y <=410:
+        player.y=640
+    if player.x <=260 and player.y <=410:
+        player.y=640
 
+    
 
     player.player_creation()
     player.player_draw()
