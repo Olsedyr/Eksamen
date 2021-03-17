@@ -25,28 +25,68 @@ class Collisionbox():
 
 class Player():
     def __init__(self):
+        self.walkRight = [pygame.image.load('player/R1.png'), pygame.image.load('player/R2.png'), pygame.image.load('player/R3.png'), pygame.image.load('player/R4.png'), pygame.image.load('player/R5.png'), pygame.image.load('player/R6.png'), pygame.image.load('player/R7.png'), pygame.image.load('player/R8.png'), pygame.image.load('player/R9.png')]
+        self.walkLeft = [pygame.image.load('player/L1.png'), pygame.image.load('player/L2.png'), pygame.image.load('player/L3.png'), pygame.image.load('player/L4.png'), pygame.image.load('player/L5.png'), pygame.image.load('player/L6.png'), pygame.image.load('player/L7.png'), pygame.image.load('player/L8.png'), pygame.image.load('player/L9.png')]
+        self.character = pygame.image.load('player/standing.png')
+
+
         self.health = 100
+        self.vel = 5
+        self.x = 50
+        self.y = 450
+        self.isJump = False
+        self.jumpCount = 10
+        self.left=False
+        self.right=False
+        self.walkCount=0
 
 
-    def spawn_player(self):
-        self.testSprite = makeSprite("player/spritesheet.png", 16)
-        self.moveSprite(testSprite, 300, 300, True)
-        self.showSprite(testSprite)
-        self.next.Frame = clock()
-        self.frame = 0
-        while True:
-            if self.clock() > self.nextFrame:
-                self.frame = (self.frame+1)%8
-                self.nextFrame += 80
+    def player_creation(self):
+        self.keys = pygame.key.get_pressed()
 
-        if keyPressed("right"):
-            changeSpriteImage(self.testSprite, 0*8+self.frame)
-        elif keyPressed("left"):
-            changeSpriteImage(self.testSprite, 2*8+self.frame)
+        if self.keys[pygame.K_LEFT] and self.x > self.vel:
+            self.x-= self.vel
+            self.left=True
+            self.right=False
+
+        elif self.keys[pygame.K_RIGHT] and self.x < 500-self.screen_width:
+            self.x+= self.vel
+            self.left=False
+            self.right=True
         else:
-            changeSpriteImage(self.testSprite, 0*8+self.frame)
+            self.left=False
+            self.right=False
+            self.walkCount = 0
 
 
+        if not(self.isJump):
+            if self.keys[pygame.K_SPACE]:
+                self.isJump = True
+                self.left=False
+                self.right=False
+                self.walkCount = 0
+        else:
+            if self.jumpCount >= -10:
+                self.neg = 1
+                if self.jumpCount < 0:
+                    self.neg = -1
+                self.y -= (self.jumpCount**2)*0.5*self.neg
+                self.jumpCount -= 1
+            else:
+                self.isJump = False
+                self.jumpCount = 10
+
+        def player_draw(self):
+            if self.walkCount +1 >= 27:
+                self.walkCount = 0
+            if self.left:
+                self.screen.blit(self.walkLeft[self.walkCount//3],  (self.x,self.y))
+                self.walkCount += 1
+            elif self.right:
+                self.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+                self.walkCount += 1
+            else:
+                self.screen.blit(self.character,  (self.x,self.y))
 
 game=Game()
 treasure=Treasure()
@@ -66,7 +106,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Game Resolution
 
-bg = pygame.image.load("Pictures\Menu_wallpaper.png")
+bg22 = pygame.image.load("Pictures\Menu_wallpaper.png")
 map = pygame.image.load("Pictures\map(2).png")
 
 # Text Renderer
@@ -112,7 +152,7 @@ def main_menu(game):
                     quit()
 
         # Main Menu UI
-        game.screen.blit(bg,(0,0))
+        game.screen.blit(bg22,(0,0))
 
         if game.menu_element=="start":
             text_start=text_format("START", font, 75, white)
@@ -150,7 +190,8 @@ def draw_game(game):
     #floor
     pygame.draw.rect(game.screen, white, pygame.Rect(0,705,1280,10))
 
-    player.spawn_player()
+
+    game.player_draw()
 
     pygame.display.update()
 
