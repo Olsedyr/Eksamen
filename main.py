@@ -191,7 +191,7 @@ def draw_game(game):
     pygame.draw.rect(game.screen, white, pygame.Rect(300,470,475,10))
 
     #floor
-    
+
 
     player.player_creation()
     player.player_draw()
