@@ -32,6 +32,7 @@ class Player():
 
         self.health = 100
         self.vel = 5
+        self.vel2 = 4
         self.x = 0
         self.y = 640
 
@@ -45,7 +46,7 @@ class Player():
     def player_creation(self):
         self.keys = pygame.key.get_pressed()
 
-        if self.keys[pygame.K_LEFT]:
+        if self.keys[pygame.K_LEFT] :
             player.x-= player.vel
             player.left=True
             player.right=False
@@ -71,7 +72,7 @@ class Player():
                 self.neg = 1
                 if self.jumpCount < 0:
                     self.neg = -1
-                player.y -= (player.jumpCount**2)*0.5*self.neg
+                player.y -= (player.jumpCount**2)*0.2*self.neg
                 player.jumpCount -= 1
             else:
                 player.isJump = False
@@ -88,6 +89,11 @@ class Player():
             player.walkCount += 1
         else:
             game.screen.blit(self.character,  (self.x,self.y))
+            print(self.y)
+
+
+
+
 
 game=Game()
 treasure=Treasure()
@@ -188,9 +194,18 @@ def draw_game(game):
 
     game.screen.blit(map,(0,0))
     #Platform
-    pygame.draw.rect(game.screen, white, pygame.Rect(300,470,475,10))
 
-    #floor
+
+#MOvement
+
+    if player.x < 305 and player.x > 280 and player.keys[pygame.K_UP]:
+        player.y -= player.vel
+    if player.x < 305 and player.x > 280 and player.keys[pygame.K_DOWN]:
+        player.y += player.vel
+    if player.y < 415:
+        player.y = 410
+    if player.y > 640:
+        player.y = 640
 
 
     player.player_creation()
