@@ -10,6 +10,8 @@ class Game():
         self.screen_width=1280
         self.screen_height=720
         self.screen=pygame.display.set_mode((self.screen_width, self.screen_height))
+        self.clock = pygame.time.Clock()
+        self.FPS=30
 
 class Treasure():
     def __init__(self):
@@ -23,10 +25,26 @@ class Collisionbox():
 
 class Player():
     def __init__(self):
-        pass
+        self.health = 100
 
 
+    def spawn_player(self):
+        self.testSprite = makeSprite("player/spritesheet.png", 16)
+        self.moveSprite(testSprite, 300, 300, True)
+        self.showSprite(testSprite)
+        self.next.Frame = clock()
+        self.frame = 0
+        while True:
+            if self.clock() > self.nextFrame:
+                self.frame = (self.frame+1)%8
+                self.nextFrame += 80
 
+        if keyPressed("right"):
+            changeSpriteImage(self.testSprite, 0*8+self.frame)
+        elif keyPressed("left"):
+            changeSpriteImage(self.testSprite, 2*8+self.frame)
+        else:
+            changeSpriteImage(self.testSprite, 0*8+self.frame)
 
 
 
@@ -73,8 +91,7 @@ font = "Retro.ttf"
 
 
 # Game Framerate
-clock = pygame.time.Clock()
-FPS=30
+
 
 # Main Menu
 def main_menu(game):
@@ -133,7 +150,7 @@ def draw_game(game):
     #floor
     pygame.draw.rect(game.screen, white, pygame.Rect(0,705,1280,10))
 
-    player.image()
+    player.spawn_player()
 
     pygame.display.update()
 
@@ -150,7 +167,7 @@ while not done:
 
 #Initialize the Game
 
-clock.tick(FPS)
+self.clock.tick(self.FPS)
 main_menu()
 pygame.quit()
 quit()
