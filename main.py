@@ -32,8 +32,9 @@ class Player():
 
         self.health = 100
         self.vel = 5
-        self.x = 50
-        self.y = 450
+        self.x = 0
+        self.y = 640
+
         self.isJump = False
         self.jumpCount = 10
         self.left=False
@@ -44,54 +45,55 @@ class Player():
     def player_creation(self):
         self.keys = pygame.key.get_pressed()
 
-        if self.keys[pygame.K_LEFT] and self.x > self.vel:
-            self.x-= self.vel
-            self.left=True
-            self.right=False
+        if self.keys[pygame.K_LEFT]:
+            player.x-= player.vel
+            player.left=True
+            player.right=False
 
-        elif self.keys[pygame.K_RIGHT] and self.x < 500-self.screen_width:
-            self.x+= self.vel
-            self.left=False
-            self.right=True
+        elif self.keys[pygame.K_RIGHT]:
+            player.x+= player.vel
+            player.left=False
+            player.right=True
         else:
-            self.left=False
-            self.right=False
-            self.walkCount = 0
+            player.left=False
+            player.right=False
+            player.walkCount = 0
 
 
-        if not(self.isJump):
+        if not(player.isJump):
             if self.keys[pygame.K_SPACE]:
-                self.isJump = True
-                self.left=False
-                self.right=False
-                self.walkCount = 0
+                player.isJump = True
+                player.left=False
+                player.right=False
+                player.walkCount = 0
         else:
-            if self.jumpCount >= -10:
+            if player.jumpCount >= -10:
                 self.neg = 1
                 if self.jumpCount < 0:
                     self.neg = -1
-                self.y -= (self.jumpCount**2)*0.5*self.neg
-                self.jumpCount -= 1
+                player.y -= (player.jumpCount**2)*0.5*self.neg
+                player.jumpCount -= 1
             else:
-                self.isJump = False
-                self.jumpCount = 10
+                player.isJump = False
+                player.jumpCount = 10
 
-        def player_draw(self):
-            if self.walkCount +1 >= 27:
-                self.walkCount = 0
-            if self.left:
-                self.screen.blit(self.walkLeft[self.walkCount//3],  (self.x,self.y))
-                self.walkCount += 1
-            elif self.right:
-                self.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
-                self.walkCount += 1
-            else:
-                self.screen.blit(self.character,  (self.x,self.y))
+    def player_draw(self):
+        if player.walkCount +1 >= 27:
+            player.walkCount = 0
+        if player.left:
+            game.screen.blit(self.walkLeft[self.walkCount//3],  (self.x,self.y))
+            player.walkCount += 1
+        elif player.right:
+            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+            player.walkCount += 1
+        else:
+            game.screen.blit(self.character,  (self.x,self.y))
 
 game=Game()
 treasure=Treasure()
 collisionbox = Collisionbox()
 player=Player()
+
 
 done=False
 # Game Initialization
@@ -175,6 +177,7 @@ def main_menu(game):
 
 
 def draw_game(game):
+
     pygame.event.pump()
     for event in pygame.event.get():
         if event.type == pygame.MOUSEMOTION:
@@ -188,10 +191,10 @@ def draw_game(game):
     pygame.draw.rect(game.screen, white, pygame.Rect(300,470,475,10))
 
     #floor
-    pygame.draw.rect(game.screen, white, pygame.Rect(0,705,1280,10))
+    
 
-
-    game.player_draw()
+    player.player_creation()
+    player.player_draw()
 
     pygame.display.update()
 
