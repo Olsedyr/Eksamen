@@ -20,10 +20,18 @@ class Collisionbox():
     def __init__(self):
         pass
 
+
 class Player():
+
     def __init__(self):
-        self.health = 100
-        self.sheet=pygame.image.load("player/playersprite.png").convert()
+
+        # Load the sprite sheet.
+        self.sprite_sheet = pygame.image.load("player/playersprite.png").convert()
+        # Create a new blank image
+        self.image = pygame.display([game.screen_width, game.screen_height]).convert()
+        # Copy the sprite from the large sheet onto the smaller image
+        self.image.blit(self.sprite_sheet, (0, 0), (0, 0, game.screen_width, game.screen_height))
+
 
 
 
@@ -31,6 +39,7 @@ class Player():
 game=Game()
 treasure=Treasure()
 collisionbox = Collisionbox()
+player=Player()
 
 done=False
 # Game Initialization
@@ -130,7 +139,7 @@ def draw_game(game):
     #floor
     pygame.draw.rect(game.screen, white, pygame.Rect(0,705,1280,10))
 
-
+    player.image()
 
     pygame.display.update()
 
