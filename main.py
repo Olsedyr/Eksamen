@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import os
 
-
 class Game():
     def __init__(self):
         self.tilstand = 0
@@ -18,9 +17,10 @@ class Treasure():
         self.health = 100
 
 
-class Collisionbox():
+class Healing():
     def __init__(self):
-        pass
+        self.healing = 20
+        self.times = 5
 
 
 class Player():
@@ -97,7 +97,7 @@ class Player():
 
 game=Game()
 treasure=Treasure()
-collisionbox = Collisionbox()
+healing=Healing()
 player=Player()
 
 
@@ -116,11 +116,18 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 bg22 = pygame.image.load("Pictures\Menu_wallpaper.png")
 map = pygame.image.load("Pictures\map(2).png")
+heart = pygame.image.load("pictures/pixel_heart.png")
+heart=pygame.transform.scale(heart,(50,50))
+heart2 = pygame.image.load("pictures/pixel_heart2.png")
+heart2 = pygame.transform.scale(heart2,(50,50))
+
 
 # Text Renderer
 def text_format(message, textFont, textSize, textColor):
     newFont=pygame.font.Font(textFont, textSize)
     newText=newFont.render(message, 0, textColor)
+
+
 
     return newText
 
@@ -190,14 +197,20 @@ def draw_game(game):
             print(pygame.mouse.get_pos())
 
 
-
+    newFont2=pygame.font.Font("Retro.ttf", 42)
+    newText2=newFont2.render(str(player.health), 0, white)
+    newFont3=pygame.font.Font("Retro.ttf", 42)
+    newText3=newFont3.render(str(healing.times), 0, white)
 
     game.screen.blit(map,(0,0))
+    game.screen.blit(newText2,(50,10))
+    game.screen.blit(newText3,(60,60))
+    game.screen.blit(heart, (0,0))
+    game.screen.blit(heart2, (0,50))
     #Platform
 
 
-#MOvement
-
+#Tjekker om spilleren går op på stigen
     if player.x < 305 and player.x > 280 and player.keys[pygame.K_UP]:
         player.y -= player.vel
 
@@ -209,20 +222,28 @@ def draw_game(game):
     else:
         player.vel = 5
 
-
+#Tjekker om spilleren går ned på stigen
     if player.x < 305 and player.x > 280 and player.keys[pygame.K_DOWN]:
         player.y += player.vel
     elif player.y < 415:
         player.y = 410
     elif player.y > 640:
         player.y = 640
+
+
+#Tjekker om spileren er uden for platformen
     if player.x > 750 and player.y <=410:
         player.y=640
+        player.health -= 15
     if player.x <=260 and player.y <=410:
         player.y=640
+        player.health -= 15
 
-
-
+#tjekker om karakteren er ved hjertet(Healthstation)
+ #695,410
+    if player.x > 694 and player.x < 697 and player.y < 412 and player.y > 408:
+        player.health += healing.healing
+        healing.times -=1
     player.player_creation()
     player.player_draw()
 
