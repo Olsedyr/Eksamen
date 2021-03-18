@@ -61,22 +61,22 @@ class Player():
             player.walkCount = 0
 
 
-        if not(player.isJump):
-            if self.keys[pygame.K_SPACE]:
-                player.isJump = True
-                player.left=False
-                player.right=False
-                player.walkCount = 0
-        else:
-            if player.jumpCount >= -10:
-                self.neg = 1
-                if self.jumpCount < 0:
-                    self.neg = -1
-                player.y -= (player.jumpCount**2)*0.2*self.neg
-                player.jumpCount -= 1
-            else:
-                player.isJump = False
-                player.jumpCount = 10
+        # if not(player.isJump):
+        #     if self.keys[pygame.K_SPACE]:
+        #         player.isJump = True
+        #         player.left=False
+        #         player.right=False
+        #         player.walkCount = 0
+        # else:
+        #     if player.jumpCount >= -10:
+        #         self.neg = 1
+        #         if self.jumpCount < 0:
+        #             self.neg = -1
+        #         player.y -= (player.jumpCount**2)*0.2*self.neg
+        #         player.jumpCount -= 1
+        #     else:
+        #         player.isJump = False
+        #         player.jumpCount = 10
 
     def player_draw(self):
         if player.walkCount +1 >= 27:
@@ -200,21 +200,28 @@ def draw_game(game):
 
     if player.x < 305 and player.x > 280 and player.keys[pygame.K_UP]:
         player.y -= player.vel
-        player.left=False
-        player.right=False
-        player.walkCount = 0
+
+#Tjekker om karakteren er på stigen
+    if player.y <640 and player.y > 410 and player.keys[pygame.K_LEFT]:
+        player.vel = 0
+    elif player.y <640 and player.y > 410 and player.keys[pygame.K_RIGHT]:
+        player.vel = 0
+    else:
+        player.vel = 5
+
+
     if player.x < 305 and player.x > 280 and player.keys[pygame.K_DOWN]:
         player.y += player.vel
-    if player.y < 415:
+    elif player.y < 415:
         player.y = 410
-    if player.y > 640:
+    elif player.y > 640:
         player.y = 640
     if player.x > 750 and player.y <=410:
         player.y=640
     if player.x <=260 and player.y <=410:
         player.y=640
 
-    
+
 
     player.player_creation()
     player.player_draw()
