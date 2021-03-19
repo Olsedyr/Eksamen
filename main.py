@@ -1,6 +1,9 @@
 import pygame
 from pygame.locals import *
 import os
+import threading
+import time
+
 
 class Game():
     def __init__(self):
@@ -11,6 +14,8 @@ class Game():
         self.screen=pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         self.FPS=30
+        self.thread=myThread(0.1)
+        self.thread.start()
 
 class Treasure():
     def __init__(self):
@@ -21,7 +26,7 @@ class Healing():
     def __init__(self):
         self.healing = 20
         self.times = 5
-
+        self.healingtimes = True
 
 class Player():
     def __init__(self):
@@ -32,7 +37,7 @@ class Player():
 
         self.health = 100
         self.vel = 5
-        self.vel2 = 4
+        self.vel2 = 1
         self.x = 0
         self.y = 640
 
@@ -41,6 +46,8 @@ class Player():
         self.left=False
         self.right=False
         self.walkCount=0
+
+
 
 
     def player_creation(self):
@@ -89,8 +96,17 @@ class Player():
             player.walkCount += 1
         else:
             game.screen.blit(self.character,  (self.x,self.y))
-            print(self.x,self.y)
+#            print(self.x,self.y)
 
+class myThread (threading.Thread):
+   def __init__(self, time):
+      threading.Thread.__init__(self)
+      self.time = time
+
+   def run(self):
+      print (f"Starting timer for {self.time} seconds")
+      time.sleep(self.time)
+      print("timer complete")
 
 
 
@@ -106,9 +122,9 @@ done=False
 pygame.init()
 
 
-
-asd = pygame.mouse.get_pos()
-print(asd)
+#
+# asd = pygame.mouse.get_pos()
+# print(asd)
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
@@ -189,6 +205,9 @@ def main_menu(game):
         pygame.display.update()
 
 
+
+
+
 def draw_game(game):
 
     pygame.event.pump()
@@ -237,13 +256,39 @@ def draw_game(game):
         player.health -= 15
     if player.x <=260 and player.y <=410:
         player.y=640
-        player.health -= 15
+        player.health -= 20
 
 #tjekker om karakteren er ved hjertet(Healthstation)
- #695,410
-    if player.x > 694 and player.x < 697 and player.y < 412 and player.y > 408:
-        player.health += healing.healing
-        healing.times -=1
+#Healing
+
+
+
+    if player.x > 694 and player.x < 697 and player.y < 412 and player.y > 408 and healing.healingtimes==True:
+        
+        if not game.thread.is_alive():
+            game.thread=myThread(5)
+            game.thread.start()
+            player.health = 100
+            healing.times -=1
+        else:
+            print("nooooooooooooo")
+
+
+
+    if healing.times == 0:
+        healing.healingtimes = False
+        healing.healing = 0
+
+
+
+
+
+
+
+
+
+
+
     player.player_creation()
     player.player_draw()
 
@@ -255,6 +300,7 @@ while not done:
         main_menu(game)
     if game.tilstand==1:
         draw_game(game)
+
 
 
 
