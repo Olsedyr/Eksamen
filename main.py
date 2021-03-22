@@ -16,11 +16,12 @@ class Game():
         self.FPS=30
         self.thread=myThread(0.1)
         self.thread.start()
+        self.bullets=[]
+
 
 class Treasure():
     def __init__(self):
         self.health = 100
-
 
 class Healing():
     def __init__(self):
@@ -28,13 +29,41 @@ class Healing():
         self.times = 5
         self.healingtimes = True
 
+class Fireball():
+    def __init__(self, x=2, y=2, right=True):
+        self.x = x
+        self.y = y
+        self.damage = 15
+        if right==True:
+            self.speed = 5
+        else:
+            self.speed = -5
+
+    def update(self):
+        self.x += self.speed
+
+
+
+
+
+
+
+def new_bullet(game, player):
+    game.bullets.append(Fireball(x=player.x, y=player.y, right=player.right))
+
 class Player():
     def __init__(self):
         self.walkRight = [pygame.image.load('player/R1.png'), pygame.image.load('player/R2.png'), pygame.image.load('player/R3.png'), pygame.image.load('player/R4.png'), pygame.image.load('player/R5.png'), pygame.image.load('player/R6.png'), pygame.image.load('player/R7.png'), pygame.image.load('player/R8.png'), pygame.image.load('player/R9.png')]
         self.walkLeft = [pygame.image.load('player/L1.png'), pygame.image.load('player/L2.png'), pygame.image.load('player/L3.png'), pygame.image.load('player/L4.png'), pygame.image.load('player/L5.png'), pygame.image.load('player/L6.png'), pygame.image.load('player/L7.png'), pygame.image.load('player/L8.png'), pygame.image.load('player/L9.png')]
         self.character = pygame.image.load('player/standing.png')
-        self.attack_right = pygame.image.load('player/A1.png')
-        self.attack_left = pygame.image.load('player/A2.png')
+
+        self.attackR = pygame.image.load('player/fireball.png')
+        self.attackR = pygame.transform.scale(self.attackR, (32, 36))
+
+        self.attackL = pygame.image.load('player/fireball2.png')
+        self.attackL = pygame.transform.scale(self.attackL, (32, 36))
+
+
 
 
         self.health = 100
@@ -43,10 +72,10 @@ class Player():
         self.x = 0
         self.y = 640
 
-        self.isJump = False
-        self.jumpCount = 10
+        self.isAttack = False
         self.left=False
         self.right=False
+        self.standing=False
         self.walkCount=0
 
 
@@ -59,15 +88,21 @@ class Player():
             player.x-= player.vel
             player.left=True
             player.right=False
+            self.standing=False
 
         elif self.keys[pygame.K_RIGHT]:
             player.x+= player.vel
             player.left=False
             player.right=True
+            self.standing=False
         else:
-            player.left=False
-            player.right=False
             player.walkCount = 0
+
+
+        if self.keys[pygame.K_SPACE]:
+            new_bullet(game, player)
+
+
 
 
         # if not(player.isJump):
@@ -96,9 +131,10 @@ class Player():
         elif player.right:
             game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
             player.walkCount += 1
-        else:
+        elif player.character:
             game.screen.blit(self.character,  (self.x,self.y))
 #            print(self.x,self.y)
+
 
 class myThread (threading.Thread):
    def __init__(self, time):
@@ -117,7 +153,7 @@ game=Game()
 treasure=Treasure()
 healing=Healing()
 player=Player()
-
+fireball=Fireball()
 
 done=False
 # Game Initialization
@@ -252,6 +288,9 @@ def draw_game(game):
         player.y = 640
 
 
+
+
+
 #Tjekker om spileren er uden for platformen
     if player.x > 750 and player.y <=410:
         player.y=640
@@ -283,10 +322,18 @@ def draw_game(game):
 
 
 
-
-
-
-
+    for bullet in game.bullets:
+        if bullet.speed > 0:
+            game.screen.blit(player.attackR, (bullet.x, bullet.y))
+        else:
+            game.screen.blit(player.attackL, (bullet.x, bullet.y))
+        bullet.update()
+        if bullet.x > game.screen_width:
+            game.bullets.remove(bullet)
+            print("fjernet")
+        elif bullet.x < 0:
+            game.bullets.remove(bullet)
+            print("fjernet")
 
 
 
