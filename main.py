@@ -18,7 +18,6 @@ class Game():
         self.thread.start()
         self.bullets=[]
 
-
 class Treasure():
     def __init__(self):
         self.health = 100
@@ -78,8 +77,6 @@ class Player():
         self.walkCount=0
 
 
-
-
     def player_creation(self):
         self.keys = pygame.key.get_pressed()
 
@@ -114,7 +111,7 @@ class Player():
             player.walkCount += 1
         elif player.character:
             game.screen.blit(self.character,  (self.x,self.y))
-#            print(self.x,self.y)
+
 
 
 class myThread (threading.Thread):
@@ -128,8 +125,6 @@ class myThread (threading.Thread):
       print("timer complete")
 
 
-
-
 game=Game()
 treasure=Treasure()
 healing=Healing()
@@ -141,9 +136,7 @@ done=False
 pygame.init()
 
 
-#
-# asd = pygame.mouse.get_pos()
-# print(asd)
+
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
@@ -161,9 +154,6 @@ heart2 = pygame.transform.scale(heart2,(50,50))
 def text_format(message, textFont, textSize, textColor):
     newFont=pygame.font.Font(textFont, textSize)
     newText=newFont.render(message, 0, textColor)
-
-
-
     return newText
 
 
@@ -224,9 +214,6 @@ def main_menu(game):
         pygame.display.update()
 
 
-
-
-
 def draw_game(game):
 
     pygame.event.pump()
@@ -268,10 +255,6 @@ def draw_game(game):
     elif player.y > 640:
         player.y = 640
 
-
-
-
-
 #Tjekker om spileren er uden for platformen
     if player.x > 750 and player.y <=410:
         player.y=640
@@ -282,8 +265,6 @@ def draw_game(game):
 
 #tjekker om karakteren er ved hjertet(Healthstation)
 #Healing
-
-
 
     if player.x > 694 and player.x < 697 and player.y < 412 and player.y > 408 and healing.healingtimes==True:
 
@@ -317,13 +298,11 @@ def draw_game(game):
             print("fjernet")
 
 
-
-
-
     player.player_creation()
     player.player_draw()
 
     pygame.display.update()
+
 
 
 while not done:
@@ -332,12 +311,6 @@ while not done:
     if game.tilstand==1:
         draw_game(game)
 
-
-
-
-
-
-#Initialize the Game
 
 self.clock.tick(self.FPS)
 main_menu()
