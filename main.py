@@ -264,7 +264,7 @@ def draw_game(game):
 
 
     if player.x > 694 and player.x < 697 and player.y < 412 and player.y > 408 and healing.healingtimes==True:
-        
+
         if not game.thread.is_alive():
             game.thread=myThread(5)
             game.thread.start()
