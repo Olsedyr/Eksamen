@@ -31,25 +31,24 @@ class Healing():
 
 class Fireball():
     def __init__(self, x=2, y=2, right=True):
-        self.x = x
-        self.y = y
+        self.y = y+15
         self.damage = 15
         if right==True:
             self.speed = 5
+            self.x = x+35
         else:
             self.speed = -5
+            self.x = x
 
     def update(self):
         self.x += self.speed
 
-
-
-
-
-
-
 def new_bullet(game, player):
-    game.bullets.append(Fireball(x=player.x, y=player.y, right=player.right))
+    if len(game.bullets) > 8:
+        pass
+    else:
+        game.bullets.append(Fireball(x=player.x, y=player.y, right=player.right))
+
 
 class Player():
     def __init__(self):
@@ -103,24 +102,6 @@ class Player():
             new_bullet(game, player)
 
 
-
-
-        # if not(player.isJump):
-        #     if self.keys[pygame.K_SPACE]:
-        #         player.isJump = True
-        #         player.left=False
-        #         player.right=False
-        #         player.walkCount = 0
-        # else:
-        #     if player.jumpCount >= -10:
-        #         self.neg = 1
-        #         if self.jumpCount < 0:
-        #             self.neg = -1
-        #         player.y -= (player.jumpCount**2)*0.2*self.neg
-        #         player.jumpCount -= 1
-        #     else:
-        #         player.isJump = False
-        #         player.jumpCount = 10
 
     def player_draw(self):
         if player.walkCount +1 >= 27:
@@ -334,6 +315,7 @@ def draw_game(game):
         elif bullet.x < 0:
             game.bullets.remove(bullet)
             print("fjernet")
+
 
 
 
