@@ -33,10 +33,10 @@ class Fireball():
         self.y = y+15
         self.damage = 15
         if right==True:
-            self.speed = 5
+            self.speed = 10
             self.x = x+35
         else:
-            self.speed = -5
+            self.speed = -10
             self.x = x
 
     def update(self):
@@ -61,9 +61,6 @@ class Player():
 
         self.attackL = pygame.image.load('player/fireball2.png')
         self.attackL = pygame.transform.scale(self.attackL, (32, 36))
-
-
-
 
         self.health = 100
         self.vel = 5
@@ -100,7 +97,6 @@ class Player():
             new_bullet(game, player)
 
 
-
     def player_draw(self):
         if player.walkCount +1 >= 27:
             player.walkCount = 0
@@ -133,6 +129,8 @@ player=Player()
 fireball=Fireball()
 
 done=False
+
+
 # Game Initialization
 pygame.init()
 dir = os.getcwd()
