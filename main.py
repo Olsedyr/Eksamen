@@ -146,7 +146,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 path = os.path.join(dir, "Pictures/Menu_wallpaper.png")
 bg22 = pygame.image.load(path)
 
-path3 = os.path.join(dir, "Pictures/pixel_heart2.png")
+path3 = os.path.join(dir, "Pictures/pixel_heart.png")
 heart = pygame.image.load(path3)
 heart = pygame.transform.scale(heart,(50,50))
 
