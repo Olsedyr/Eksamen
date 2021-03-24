@@ -51,6 +51,7 @@ def new_bullet(game, player):
 
 class Player():
     def __init__(self):
+
         self.walkRight = [pygame.image.load('player/R1.png'), pygame.image.load('player/R2.png'), pygame.image.load('player/R3.png'), pygame.image.load('player/R4.png'), pygame.image.load('player/R5.png'), pygame.image.load('player/R6.png'), pygame.image.load('player/R7.png'), pygame.image.load('player/R8.png'), pygame.image.load('player/R9.png')]
         self.walkLeft = [pygame.image.load('player/L1.png'), pygame.image.load('player/L2.png'), pygame.image.load('player/L3.png'), pygame.image.load('player/L4.png'), pygame.image.load('player/L5.png'), pygame.image.load('player/L6.png'), pygame.image.load('player/L7.png'), pygame.image.load('player/L8.png'), pygame.image.load('player/L9.png')]
         self.character = pygame.image.load('player/standing.png')
@@ -134,19 +135,26 @@ fireball=Fireball()
 done=False
 # Game Initialization
 pygame.init()
-
+dir = os.getcwd()
+print("cwd: " + dir)
 
 
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Game Resolution
+path = os.path.join(dir, "Pictures/Menu_wallpaper.png")
+bg22 = pygame.image.load(path)
 
-bg22 = pygame.image.load("Pictures\Menu_wallpaper.png")
-map = pygame.image.load("Pictures\map(2).png")
-heart = pygame.image.load("pictures/pixel_heart.png")
-heart=pygame.transform.scale(heart,(50,50))
-heart2 = pygame.image.load("pictures/pixel_heart2.png")
+path3 = os.path.join(dir, "Pictures/pixelheart.png")
+heart3 = pygame.image.load(path3)
+heart3 = pygame.transform.scale(heart3,(50,50))
+
+path2 = os.path.join(dir, "Pictures/map(2).png")
+map = pygame.image.load(path2)
+
+path4 = os.path.join(dir, "Pictures/pixel_heart2.png")
+heart2 = pygame.image.load(path4)
 heart2 = pygame.transform.scale(heart2,(50,50))
 
 
