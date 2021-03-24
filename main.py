@@ -120,6 +120,7 @@ class Enemy():
 
 class Player():
     def __init__(self):
+
         self.walkRight = [pygame.image.load('player/R1.png'), pygame.image.load('player/R2.png'), pygame.image.load('player/R3.png'), pygame.image.load('player/R4.png'), pygame.image.load('player/R5.png'), pygame.image.load('player/R6.png'), pygame.image.load('player/R7.png'), pygame.image.load('player/R8.png'), pygame.image.load('player/R9.png')]
         self.walkLeft = [pygame.image.load('player/L1.png'), pygame.image.load('player/L2.png'), pygame.image.load('player/L3.png'), pygame.image.load('player/L4.png'), pygame.image.load('player/L5.png'), pygame.image.load('player/L6.png'), pygame.image.load('player/L7.png'), pygame.image.load('player/L8.png'), pygame.image.load('player/L9.png')]
         self.character = pygame.image.load('player/standing.png')
@@ -165,7 +166,6 @@ class Player():
             new_bullet(game, player)
 
 
-
     def player_draw(self):
         if player.walkCount +1 >= 27:
             player.walkCount = 0
@@ -203,6 +203,14 @@ fireball=Fireball()
 enemy=Enemy()
 done=False
 
+<<<<<<< HEAD
+=======
+
+# Game Initialization
+pygame.init()
+dir = os.getcwd()
+print("cwd: " + dir)
+>>>>>>> eabef4e3d1215b0ede8d25161e971e289c6ee5ec
 
 
 # Game Initialization
@@ -210,6 +218,7 @@ pygame.init()
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
+<<<<<<< HEAD
 
 
 # Game Resolution
@@ -221,6 +230,21 @@ heart = pygame.image.load("Pictures/pixel_heart.png")
 heart=pygame.transform.scale(heart,(50,50))
 
 heart2 = pygame.image.load("Pictures/pixel_heart2.png")
+=======
+# Game Resolution
+path = os.path.join(dir, "Pictures/Menu_wallpaper.png")
+bg22 = pygame.image.load(path)
+
+path3 = os.path.join(dir, "Pictures/pixel_heart.png")
+heart = pygame.image.load(path3)
+heart = pygame.transform.scale(heart,(50,50))
+
+path2 = os.path.join(dir, "Pictures/map(2).png")
+map = pygame.image.load(path2)
+
+path4 = os.path.join(dir, "Pictures/pixel_heart2.png")
+heart2 = pygame.image.load(path4)
+>>>>>>> eabef4e3d1215b0ede8d25161e971e289c6ee5ec
 heart2 = pygame.transform.scale(heart2,(50,50))
 
 treasure2 = pygame.image.load("Pictures/treasure.png")
