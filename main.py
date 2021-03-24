@@ -20,7 +20,9 @@ class Game():
 
 class Treasure():
     def __init__(self):
-        self.health = 100
+        self.health = 200
+
+
 
 class Healing():
     def __init__(self):
@@ -33,10 +35,10 @@ class Fireball():
         self.y = y+15
         self.damage = 15
         if right==True:
-            self.speed = 5
+            self.speed = 10
             self.x = x+35
         else:
-            self.speed = -5
+            self.speed = -10
             self.x = x
 
     def update(self):
@@ -47,6 +49,73 @@ def new_bullet(game, player):
         pass
     else:
         game.bullets.append(Fireball(x=player.x, y=player.y, right=player.right))
+
+
+
+
+class Enemy():
+    walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+    walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
+    attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+    def __init__(self):
+        self.x = 0
+        self.y = 645
+        self.width = 32
+        self.height = 32
+        self.path = [self.x, 600]  # Her bestemmer jeg hvor fjenden starter og slutter
+        self.walkCount = 0
+        self.hitCount = 0
+        self.vel = 3
+        self.hit=False
+        self.health = 50
+
+    def draw(self):
+        self.move()
+
+        if self.walkCount + 1 >= 33:
+            self.walkCount = 0
+
+        if self.vel > 0:
+            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+        else:
+            game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+
+        #Tjekker om enemy er ved kiste
+        if self.hitCount +1 >= 12:
+            self.hitCount = 0
+
+        if enemy.x == 600:
+            enemy.vel=0
+            self.vel=0
+            self.hitCount+=1
+            self.hit=True
+        else:
+            pass
+
+        if enemy.x==600 and self.hit==True and self.walkCount==6:
+            treasure.health -=5
+
+
+
+
+    def move(self):
+        if self.vel > 0:
+            if self.x < self.path[1] + self.vel:
+                self.x += self.vel
+            else:
+                self.vel = self.vel * -1
+                self.x += self.vel
+                self.walkCount = 0
+        else:
+            if self.x > self.path[0] - self.vel:
+                self.x += self.vel
+            else:
+                self.vel = self.vel * -1
+                self.x += self.vel
+                self.walkCount = 0
+
 
 
 class Player():
@@ -60,9 +129,6 @@ class Player():
 
         self.attackL = pygame.image.load('player/fireball2.png')
         self.attackL = pygame.transform.scale(self.attackL, (32, 36))
-
-
-
 
         self.health = 100
         self.vel = 5
@@ -125,29 +191,40 @@ class myThread (threading.Thread):
       print("timer complete")
 
 
+
+
+
+
 game=Game()
 treasure=Treasure()
 healing=Healing()
 player=Player()
 fireball=Fireball()
-
+enemy=Enemy()
 done=False
+
+
+
 # Game Initialization
 pygame.init()
-
-
-
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
-# Game Resolution
 
+
+# Game Resolution
 bg22 = pygame.image.load("Pictures\Menu_wallpaper.png")
+
 map = pygame.image.load("Pictures\map(2).png")
-heart = pygame.image.load("pictures/pixel_heart.png")
+
+heart = pygame.image.load("Pictures/pixel_heart.png")
 heart=pygame.transform.scale(heart,(50,50))
-heart2 = pygame.image.load("pictures/pixel_heart2.png")
+
+heart2 = pygame.image.load("Pictures/pixel_heart2.png")
 heart2 = pygame.transform.scale(heart2,(50,50))
+
+treasure2 = pygame.image.load("Pictures/treasure.png")
+treasure2 = pygame.transform.scale(treasure2,(75,75))
 
 
 # Text Renderer
@@ -155,6 +232,7 @@ def text_format(message, textFont, textSize, textColor):
     newFont=pygame.font.Font(textFont, textSize)
     newText=newFont.render(message, 0, textColor)
     return newText
+
 
 
 # Farver
@@ -165,12 +243,8 @@ red=(255, 0, 0)
 green=(0, 255, 0)
 blue=(0, 0, 255)
 yellow=(255, 255, 0)
-
 # Game Fonts
 font = "Retro.ttf"
-
-
-# Game Framerate
 
 
 # Main Menu
@@ -214,6 +288,8 @@ def main_menu(game):
         pygame.display.update()
 
 
+
+
 def draw_game(game):
 
     pygame.event.pump()
@@ -224,15 +300,30 @@ def draw_game(game):
 
     newFont2=pygame.font.Font("Retro.ttf", 42)
     newText2=newFont2.render(str(player.health), 0, white)
+
     newFont3=pygame.font.Font("Retro.ttf", 42)
     newText3=newFont3.render(str(healing.times), 0, white)
+
+    newFont4=pygame.font.Font("Retro.ttf", 42)
+    newText4=newFont4.render(str(treasure.health), 0, white)
+
+
 
     game.screen.blit(map,(0,0))
     game.screen.blit(newText2,(50,10))
     game.screen.blit(newText3,(60,60))
     game.screen.blit(heart, (0,0))
     game.screen.blit(heart2, (0,50))
+    game.screen.blit(treasure2,(0,120))
+    game.screen.blit(newText4, (85,150))
+
     #Platform
+    if treasure.health == 0:
+        game.tilstand=2
+
+
+
+
 
 
 #Tjekker om spilleren går op på stigen
@@ -276,14 +367,16 @@ def draw_game(game):
         else:
             print("nooooooooooooo")
 
-
-
     if healing.times == 0:
         healing.healingtimes = False
         healing.healing = 0
 
 
 
+
+
+
+# Forloop for bullet
     for bullet in game.bullets:
         if bullet.speed > 0:
             game.screen.blit(player.attackR, (bullet.x, bullet.y))
@@ -298,18 +391,33 @@ def draw_game(game):
             print("fjernet")
 
 
+
+
+
     player.player_creation()
     player.player_draw()
-
+    enemy.draw()
     pygame.display.update()
 
 
+def end_game(game):
+    newFont5=pygame.font.Font("Retro.ttf", 120)
+    newText5=newFont5.render(str("YOU LOST"), 0, black)
+    game.screen.blit(newText5, (500, 150))
+    pygame.display.update()
 
+
+#While game_loop
 while not done:
     if game.tilstand==0:
         main_menu(game)
     if game.tilstand==1:
         draw_game(game)
+    if game.tilstand==2:
+        end_game(game)
+
+
+
 
 
 self.clock.tick(self.FPS)
