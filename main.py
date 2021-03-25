@@ -3,6 +3,7 @@ from pygame.locals import *
 import os
 import threading
 import time
+import math
 
 
 class Game():
@@ -53,7 +54,7 @@ def new_bullet(game, player):
 
 
 
-class Enemy():
+class Enemy1():
     walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
     walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
     attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
@@ -69,7 +70,7 @@ class Enemy():
         self.hit=False
         self.health = 50
 
-    def draw(self):
+    def draw_enemy1(self):
         self.move()
 
         if self.walkCount + 1 >= 33:
@@ -99,7 +100,6 @@ class Enemy():
 
 
 
-
     def move(self):
         if self.vel > 0:
             if self.x < self.path[1] + self.vel:
@@ -115,6 +115,57 @@ class Enemy():
                 self.vel = self.vel * -1
                 self.x += self.vel
                 self.walkCount = 0
+
+class Enemy2():
+    walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+    walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
+    attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+    def __init__(self):
+
+        self.x = 0
+        self.y = 645
+        self.width = 32
+        self.height = 32
+        self.path = [self.x, 600]  # Her bestemmer jeg hvor fjenden starter og slutter
+        self.walkCount = 0
+        self.hitCount = 0
+        self.vel = 3
+        self.hit=False
+        self.health = 50
+
+    def draw_enemy2(self):
+        self.move()
+
+        if self.walkCount + 1 >= 33:
+            self.walkCount = 0
+
+    #    if self.vel > 0:
+        #    game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+        #    self.walkCount += 1
+        #else:
+        #    game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
+        #    self.walkCount += 1
+
+        #Tjekker om enemy er ved kiste
+        if self.hitCount +1 >= 12:
+            self.hitCount = 0
+
+    def move(self):
+        dirvect = pygame.math.Vector2(player.x - self.x, player.y - self.y)
+        print(dirvect)
+        if dirvect.x > 0:
+            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+            self.x += self.vel+1
+            self.walkCount += 1
+
+        elif dirvect.x < 0:
+            game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
+            self.x -= self.vel+1
+            self.walkCount += 1
+        else:
+            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+
+
 
 
 
@@ -134,7 +185,7 @@ class Player():
         self.health = 100
         self.vel = 5
         self.vel2 = 1
-        self.x = 0
+        self.x = 1200
         self.y = 640
 
         self.isAttack = False
@@ -200,17 +251,16 @@ treasure=Treasure()
 healing=Healing()
 player=Player()
 fireball=Fireball()
-enemy=Enemy()
+enemy=Enemy1()
+enemy2=Enemy2()
 done=False
 
-<<<<<<< HEAD
-=======
 
 # Game Initialization
 pygame.init()
 dir = os.getcwd()
 print("cwd: " + dir)
->>>>>>> eabef4e3d1215b0ede8d25161e971e289c6ee5ec
+
 
 
 # Game Initialization
@@ -218,19 +268,7 @@ pygame.init()
 # Center the Game Application
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
-<<<<<<< HEAD
 
-
-# Game Resolution
-bg22 = pygame.image.load("Pictures\Menu_wallpaper.png")
-
-map = pygame.image.load("Pictures\map(2).png")
-
-heart = pygame.image.load("Pictures/pixel_heart.png")
-heart=pygame.transform.scale(heart,(50,50))
-
-heart2 = pygame.image.load("Pictures/pixel_heart2.png")
-=======
 # Game Resolution
 path = os.path.join(dir, "Pictures/Menu_wallpaper.png")
 bg22 = pygame.image.load(path)
@@ -244,7 +282,7 @@ map = pygame.image.load(path2)
 
 path4 = os.path.join(dir, "Pictures/pixel_heart2.png")
 heart2 = pygame.image.load(path4)
->>>>>>> eabef4e3d1215b0ede8d25161e971e289c6ee5ec
+
 heart2 = pygame.transform.scale(heart2,(50,50))
 
 treasure2 = pygame.image.load("Pictures/treasure.png")
@@ -317,9 +355,8 @@ def main_menu(game):
 def draw_game(game):
 
     pygame.event.pump()
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEMOTION:
-            print(pygame.mouse.get_pos())
+
+
 
 
     newFont2=pygame.font.Font("Retro.ttf", 42)
@@ -400,6 +437,7 @@ def draw_game(game):
 
 
 
+
 # Forloop for bullet
     for bullet in game.bullets:
         if bullet.speed > 0:
@@ -420,7 +458,8 @@ def draw_game(game):
 
     player.player_creation()
     player.player_draw()
-    enemy.draw()
+    enemy.draw_enemy1()
+    enemy2.draw_enemy2()
     pygame.display.update()
 
 
