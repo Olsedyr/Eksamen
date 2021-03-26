@@ -4,6 +4,7 @@ import os
 import threading
 import time
 import math
+import random
 
 
 class Game():
@@ -17,7 +18,8 @@ class Game():
         self.FPS=30
         self.thread=myThread(0.1)
         self.thread.start()
-        self.bullets=[]
+        self.player_bullets=[]
+        self.enemy2_bullets=[]
 
 class Treasure():
     def __init__(self):
@@ -31,7 +33,7 @@ class Healing():
         self.times = 5
         self.healingtimes = True
 
-class Fireball():
+class Bullets():
     def __init__(self, x=2, y=2, right=True):
         self.y = y+15
         self.damage = 15
@@ -45,20 +47,26 @@ class Fireball():
     def update(self):
         self.x += self.speed
 
-def new_bullet(game, player):
-    if len(game.bullets) > 8:
-        pass
-    else:
-        game.bullets.append(Fireball(x=player.x, y=player.y, right=player.right))
+    def new_player_bullet(game, player):
+        if len(game.player_bullets) > 8:
+            pass
+        else:
+            game.player_bullets.append(Bullets(x=player.x, y=player.y, right=player.right))
+
+    def new_enemy2_bullet(game, enemy2):
+        if len(game.enemy2_bullets) > 0:
+            pass
+        else:
+            game.enemy2_bullets.append(Bullets(x=enemy2.x, y=enemy2.y))
 
 
 
 
 class Enemy1():
-    walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
-    walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
-    attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
     def __init__(self):
+        self.walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+        self.walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
+        self.attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
         self.x = 0
         self.y = 645
         self.width = 32
@@ -117,53 +125,50 @@ class Enemy1():
                 self.walkCount = 0
 
 class Enemy2():
-    walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
-    walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
-    attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
-    def __init__(self):
 
+    def __init__(self):
+        self.walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+        self.walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
+        self.attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+        self.brain= pygame.image.load('pictures/brain.png')
+        self.brain= pygame.transform.scale(self.brain, (18, 22))
         self.x = 0
         self.y = 645
         self.width = 32
         self.height = 32
-        self.path = [self.x, 600]  # Her bestemmer jeg hvor fjenden starter og slutter
+        self.path = [self.x, 0]  # Her bestemmer jeg hvor fjenden starter og slutter
         self.walkCount = 0
         self.hitCount = 0
         self.vel = 3
         self.hit=False
         self.health = 50
 
-    def draw_enemy2(self):
-        self.move()
+    def draw_enemy2(self, game):
 
         if self.walkCount + 1 >= 33:
             self.walkCount = 0
 
-    #    if self.vel > 0:
-        #    game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
-        #    self.walkCount += 1
-        #else:
-        #    game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
-        #    self.walkCount += 1
+        if self.vel > 0:
+            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+        else:
+            game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
 
         #Tjekker om enemy er ved kiste
         if self.hitCount +1 >= 12:
             self.hitCount = 0
 
-    def move(self):
-        dirvect = pygame.math.Vector2(player.x - self.x, player.y - self.y)
-        print(dirvect)
-        if dirvect.x > 0:
-            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
-            self.x += self.vel+1
-            self.walkCount += 1
+        if self.walkCount==6:
+            Bullets.new_enemy2_bullet(game, enemy2)
 
-        elif dirvect.x < 0:
-            game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
-            self.x -= self.vel+1
-            self.walkCount += 1
-        else:
-            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+
+
+
+    def Vector_till_player(self):
+        self.dirvect = pygame.math.Vector2(player.x - enemy2.x, player.y - enemy2.y)
+
+
 
 
 
@@ -214,7 +219,7 @@ class Player():
 
 
         if self.keys[pygame.K_SPACE]:
-            new_bullet(game, player)
+            Bullets.new_player_bullet(game, player)
 
 
     def player_draw(self):
@@ -250,7 +255,6 @@ game=Game()
 treasure=Treasure()
 healing=Healing()
 player=Player()
-fireball=Fireball()
 enemy=Enemy1()
 enemy2=Enemy2()
 done=False
@@ -438,19 +442,35 @@ def draw_game(game):
 
 
 
-# Forloop for bullet
-    for bullet in game.bullets:
+# Forloop for player_bullet
+    for bullet in game.player_bullets:
         if bullet.speed > 0:
             game.screen.blit(player.attackR, (bullet.x, bullet.y))
         else:
             game.screen.blit(player.attackL, (bullet.x, bullet.y))
         bullet.update()
         if bullet.x > game.screen_width:
-            game.bullets.remove(bullet)
+            game.player_bullets.remove(bullet)
             print("fjernet")
         elif bullet.x < 0:
-            game.bullets.remove(bullet)
+            game.player_bullets.remove(bullet)
             print("fjernet")
+
+
+#forLop for enemy2_bullet
+    for bullet in game.enemy2_bullets:
+        if bullet.speed > 0:
+            game.screen.blit(enemy2.brain, (bullet.x, bullet.y))
+        else:
+            game.screen.blit(enemy2.brain, (bullet.x, bullet.y))
+        bullet.update()
+        if bullet.x > game.screen_width:
+            game.enemy2_bullets.remove(bullet)
+            print("fjernet")
+        elif bullet.x < 0:
+            game.enemy2_bullets.remove(bullet)
+            print("fjernet")
+
 
 
 
@@ -459,7 +479,7 @@ def draw_game(game):
     player.player_creation()
     player.player_draw()
     enemy.draw_enemy1()
-    enemy2.draw_enemy2()
+    enemy2.draw_enemy2(game)
     pygame.display.update()
 
 
