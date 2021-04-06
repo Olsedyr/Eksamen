@@ -388,6 +388,9 @@ def draw_game(game):
 
 
 
+#Tjekker playerens Health
+    if player.health == 0:
+        game.tilstand=2
 
 
 
@@ -418,6 +421,10 @@ def draw_game(game):
     if player.x <=260 and player.y <=410:
         player.y=640
         player.health -= 20
+
+
+
+
 
 #tjekker om karakteren er ved hjertet(Healthstation)
 #Healing
@@ -464,12 +471,26 @@ def draw_game(game):
         else:
             game.screen.blit(enemy2.brain, (bullet.x, bullet.y))
         bullet.update()
+
         if bullet.x > game.screen_width:
             game.enemy2_bullets.remove(bullet)
             print("fjernet")
         elif bullet.x < 0:
             game.enemy2_bullets.remove(bullet)
             print("fjernet")
+        elif bullet.x > player.x + 5 or bullet.x == player.x:
+            game.enemy2_bullets.remove(bullet)
+            player.health -= 5
+            print("fjernet")
+        if player.y < 640:
+            game.enemy2_bullets.remove(bullet)
+            print("fjernet")
+
+
+
+
+
+
 
 
 
