@@ -37,6 +37,7 @@ class Bullets():
     def __init__(self, x=2, y=2, right=True):
         self.y = y+15
         self.damage = 15
+        self.radius = 16
         if right==True:
             self.speed = 10
             self.x = x+35
@@ -77,6 +78,9 @@ class Enemy1():
         self.vel = 3
         self.hit=False
         self.health = 50
+        self.hitbox = (self.x + 17, self.y + 2, 31, 57) #hitbox
+
+
 
     def draw_enemy1(self):
         self.move()
@@ -90,6 +94,9 @@ class Enemy1():
         else:
             game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
             self.walkCount += 1
+
+        self.hitbox = (self.x + 17, self.y + 2, 31, 57)
+        pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2)
 
         #Tjekker om enemy er ved kiste
         if self.hitCount +1 >= 12:
@@ -123,6 +130,8 @@ class Enemy1():
                 self.vel = self.vel * -1
                 self.x += self.vel
                 self.walkCount = 0
+
+
 
 # class Enemy2():
 #
@@ -464,9 +473,13 @@ def draw_game(game):
             game.player_bullets.remove(bullet)
             print("fjernet")
         elif bullet.x < 0:
-            game.player_bullets.remove(bullet)
+
             print("fjernet")
 
+        if bullet.y - bullet.radius < enemy.hitbox[1] + enemy.hitbox[3] and bullet.y + bullet.radius > enemy.hitbox[1]:
+            if bullet.x + bullet.radius > enemy.hitbox[0] and bullet.x - bullet.radius < enemy.hitbox[0] + enemy.hitbox[2]:
+                game.player_bullets.remove(bullet)
+                print("Fjern")
 
 
 #forLop for enemy2_bullet
