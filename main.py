@@ -79,40 +79,44 @@ class Enemy1():
         self.vel = 3
         self.hit=False
         self.health = 50
+        self.visible = True
         self.hitbox = (self.x + 17, self.y + 2, 31, 57) #hitbox
+
 
 
 
     def draw_enemy1(self):
         self.move()
+        if self.visible:
+            if self.walkCount + 1 >= 33:
+                self.walkCount = 0
 
-        if self.walkCount + 1 >= 33:
-            self.walkCount = 0
+            if self.vel > 0:
+                game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+                self.walkCount += 1
+            else:
+                game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
+                self.walkCount += 1
 
-        if self.vel > 0:
-            game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
-            self.walkCount += 1
-        else:
-            game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
-            self.walkCount += 1
+            pygame.draw.rect(game.screen, (0,255,0), (self.hitbox[0], self.hitbox[1] - 20, 50, 10))
+            self.hitbox = (self.x + 10, self.y + 2, 31, 57)
 
-        self.hitbox = (self.x + 17, self.y + 2, 31, 57)
-        pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2)
+            #pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2) Tegn hitbox
 
-        #Tjekker om enemy er ved kiste
-        if self.hitCount +1 >= 12:
-            self.hitCount = 0
+            #Tjekker om enemy er ved kiste
+            if self.hitCount +1 >= 12:
+                self.hitCount = 0
 
-        if enemy.x == 600:
-            enemy.vel=0
-            self.vel=0
-            self.hitCount+=1
-            self.hit=True
-        else:
-            pass
+            if enemy.x == 600:
+                enemy.vel=0
+                self.vel=0
+                self.hitCount+=1
+                self.hit=True
+            else:
+                pass
 
-        if enemy.x==600 and self.hit==True and self.walkCount==6:
-            treasure.health -=5
+            if enemy.x==600 and self.hit==True and self.walkCount==6:
+                treasure.health -=5
 
 
 
@@ -131,6 +135,7 @@ class Enemy1():
                 self.vel = self.vel * -1
                 self.x += self.vel
                 self.walkCount = 0
+
 
 
 
