@@ -85,8 +85,9 @@ class Enemy1():
 
 
 
+
     def draw_enemy1(self):
-        self.move()
+        self.update()
         if self.visible:
             if self.walkCount + 1 >= 33:
                 self.walkCount = 0
@@ -98,7 +99,10 @@ class Enemy1():
                 game.screen.blit(self.walkLeft[self.walkCount//3], (self.x,self.y))
                 self.walkCount += 1
 
-            pygame.draw.rect(game.screen, (0,255,0), (self.hitbox[0], self.hitbox[1] - 20, 50, 10))
+
+#Tegner healthbar
+            pygame.draw.rect(game.screen, (0,255,0), (self.hitbox[0], self.hitbox[1] - 20, enemy.health, 10))
+
             self.hitbox = (self.x + 10, self.y + 2, 31, 57)
 
             #pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2) Tegn hitbox
@@ -120,7 +124,7 @@ class Enemy1():
 
 
 
-    def move(self):
+    def update(self):
         if self.vel > 0:
             if self.x < self.path[1] + self.vel:
                 self.x += self.vel
@@ -183,11 +187,6 @@ class Enemy1():
 #     def Vector_till_player(self):
 #         self.dirvect = pygame.math.Vector2(player.x - enemy.x, player.y - enemy.y)
 #
-
-
-
-
-
 
 
 class Player():
@@ -272,6 +271,7 @@ treasure=Treasure()
 healing=Healing()
 player=Player()
 enemy=Enemy1()
+game.enemy_list = [enemy]
 #enemy2=Enemy2()
 done=False
 
@@ -307,6 +307,10 @@ treasure2 = pygame.transform.scale(treasure2,(75,75))
 path6 = os.path.join(dir, "Pictures/kills.png")
 kills = pygame.image.load(path6)
 kills = pygame.transform.scale(kills,(95,95))
+
+path7 = os.path.join(dir,"Pictures/banner.png")
+banner = pygame.image.load(path7)
+banner = pygame.transform.scale(banner,(500,100))
 
 
 # Text Renderer
@@ -400,6 +404,7 @@ def draw_game(game):
     game.screen.blit(newText4, (85,150))
     game.screen.blit(newText5, (85,250))
     game.screen.blit(kills, (-10, 225))
+    game.screen.blit(banner, (385, 25))
 
     #Platform
     if treasure.health == 0:
@@ -485,14 +490,21 @@ def draw_game(game):
 
             print("fjernet")
 
-        if bullet.y - bullet.radius < enemy.hitbox[1] + enemy.hitbox[3] and bullet.y + bullet.radius > enemy.hitbox[1]:
-            if bullet.x + bullet.radius > enemy.hitbox[0] and bullet.x - bullet.radius < enemy.hitbox[0] + enemy.hitbox[2]:
-                print("Fjern")
-                game.highscore += 1
-                game.player_bullets.remove(bullet)
+        for enemy in game.enemy_list:
+            if bullet.y - bullet.radius < enemy.hitbox[1] + enemy.hitbox[3] and bullet.y + bullet.radius > enemy.hitbox[1]:
+                if bullet.x + bullet.radius > enemy.hitbox[0] and bullet.x - bullet.radius < enemy.hitbox[0] + enemy.hitbox[2]:
+                    print("Fjern")
+                    enemy.health -= 5
+                    game.player_bullets.remove(bullet)
 
+    for enemy in game.enemy_list:
+        enemy.update()
+        if enemy.health < 0:
+            game.highscore +=1
+            game.enemy_list.remove(enemy)
 
-
+    if len(game.enemy_list) == 0:
+        pass
 #forLop for enemy2_bullet
     # for bullet in game.enemy2_bullets:
     #     if bullet.speed > 0:
@@ -529,7 +541,9 @@ def draw_game(game):
 
     player.player_creation()
     player.player_draw()
-    enemy.draw_enemy1()
+    for enemy in game.enemy_list:
+        enemy.draw_enemy1()
+
     #enemy2.draw_enemy2(game)
     pygame.display.update()
 
