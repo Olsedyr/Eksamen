@@ -16,6 +16,7 @@ class Game():
         self.screen=pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         self.FPS=30
+        self.highscore = 0
         self.thread=myThread(0.1)
         self.thread.start()
         self.player_bullets=[]
@@ -382,6 +383,9 @@ def draw_game(game):
     newFont4=pygame.font.Font("Retro.ttf", 42)
     newText4=newFont4.render(str(treasure.health), 0, white)
 
+    newFont5=pygame.font.Font("Retro.ttf", 42)
+    newText5=newFont5.render(str(game.highscore), 0, white)
+
 
 
     game.screen.blit(map,(0,0))
@@ -391,6 +395,7 @@ def draw_game(game):
     game.screen.blit(heart2, (0,50))
     game.screen.blit(treasure2,(0,120))
     game.screen.blit(newText4, (85,150))
+    game.screen.blit(newText5, (85,180))
 
     #Platform
     if treasure.health == 0:
@@ -478,8 +483,10 @@ def draw_game(game):
 
         if bullet.y - bullet.radius < enemy.hitbox[1] + enemy.hitbox[3] and bullet.y + bullet.radius > enemy.hitbox[1]:
             if bullet.x + bullet.radius > enemy.hitbox[0] and bullet.x - bullet.radius < enemy.hitbox[0] + enemy.hitbox[2]:
-                game.player_bullets.remove(bullet)
                 print("Fjern")
+                game.highscore += 1
+                game.player_bullets.remove(bullet)
+
 
 
 #forLop for enemy2_bullet
