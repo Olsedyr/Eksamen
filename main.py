@@ -288,20 +288,20 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 path = os.path.join(dir, "Pictures/Menu_wallpaper.png")
 bg22 = pygame.image.load(path)
 
-path3 = os.path.join(dir, "Pictures/pixel_heart.png")
-heart = pygame.image.load(path3)
-heart = pygame.transform.scale(heart,(50,50))
-
 path2 = os.path.join(dir, "Pictures/map(2).png")
 map = pygame.image.load(path2)
 
 path4 = os.path.join(dir, "Pictures/pixel_heart2.png")
 heart2 = pygame.image.load(path4)
-
 heart2 = pygame.transform.scale(heart2,(50,50))
 
-treasure2 = pygame.image.load("Pictures/treasure.png")
+path5 = os.path.join(dir, "Pictures/treasure.png")
+treasure2 = pygame.image.load(path5)
 treasure2 = pygame.transform.scale(treasure2,(75,75))
+
+path6 = os.path.join(dir, "Pictures/kills.png")
+kills = pygame.image.load(path6)
+kills = pygame.transform.scale(kills,(95,95))
 
 
 # Text Renderer
@@ -389,13 +389,12 @@ def draw_game(game):
 
 
     game.screen.blit(map,(0,0))
-    game.screen.blit(newText2,(50,10))
     game.screen.blit(newText3,(60,60))
-    game.screen.blit(heart, (0,0))
     game.screen.blit(heart2, (0,50))
     game.screen.blit(treasure2,(0,120))
     game.screen.blit(newText4, (85,150))
-    game.screen.blit(newText5, (85,180))
+    game.screen.blit(newText5, (85,250))
+    game.screen.blit(kills, (-10, 225))
 
     #Platform
     if treasure.health == 0:
