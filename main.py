@@ -20,11 +20,32 @@ class Game():
         self.thread=myThread(0.1)
         self.thread.start()
         self.player_bullets=[]
+        self.level = 0
+        self.zombieque = 0
+        self.enemy_list = []
+        self.spawner_cooldown = 0
     #    self.enemy2_bullets=[]
+
+
+    def zombie_spawner(self):
+        if len(self.enemy_list) == 0:
+            self.level += 1
+            self.zombieque = self.level*2
+
+
+        if self.zombieque > 0 and self.spawner_cooldown == 0:
+            self.enemy_list.append(Enemy1())
+            self.zombieque -= 1
+            self.spawner_cooldown = 27
+        elif self.spawner_cooldown > 0:
+            self.spawner_cooldown -= 1
+
+
+
 
 class Treasure():
     def __init__(self):
-        self.health = 200
+        self.health = 1000
 
 
 
@@ -73,10 +94,10 @@ class Enemy1():
         self.y = 645
         self.width = 32
         self.height = 32
-        self.path = [self.x, 600]  # Her bestemmer jeg hvor fjenden starter og slutter
+        self.path = [self.x, 601]  # Her bestemmer jeg hvor fjenden starter og slutter
         self.walkCount = 0
         self.hitCount = 0
-        self.vel = 3
+        self.vel = 1
         self.hit=False
         self.health = 50
         self.visible = True
@@ -101,26 +122,13 @@ class Enemy1():
 
 
 #Tegner healthbar
-            pygame.draw.rect(game.screen, (0,255,0), (self.hitbox[0], self.hitbox[1] - 20, enemy.health, 10))
+            pygame.draw.rect(game.screen, (0,255,0), (self.hitbox[0], self.hitbox[1] - 20, self.health, 10))
 
             self.hitbox = (self.x + 10, self.y + 2, 31, 57)
 
             #pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2) Tegn hitbox
 
-            #Tjekker om enemy er ved kiste
-            if self.hitCount +1 >= 12:
-                self.hitCount = 0
 
-            if enemy.x == 600:
-                enemy.vel=0
-                self.vel=0
-                self.hitCount+=1
-                self.hit=True
-            else:
-                pass
-
-            if enemy.x==600 and self.hit==True and self.walkCount==6:
-                treasure.health -=5
 
 
 
@@ -139,6 +147,17 @@ class Enemy1():
                 self.vel = self.vel * -1
                 self.x += self.vel
                 self.walkCount = 0
+
+            if self.hitCount +1 >= 12:
+                self.hitCount = 0
+
+            if self.x == 600:
+                self.vel=0
+                self.hitCount+=1
+                self.hit=True
+
+            if self.x==600 and self.hit==True and self.walkCount==6:
+                treasure.health -=5
 
 
 
@@ -270,8 +289,7 @@ game=Game()
 treasure=Treasure()
 healing=Healing()
 player=Player()
-enemy=Enemy1()
-game.enemy_list = [enemy]
+#enemy=Enemy1()
 #enemy2=Enemy2()
 done=False
 
@@ -395,6 +413,9 @@ def draw_game(game):
     newFont5=pygame.font.Font("Retro.ttf", 42)
     newText5=newFont5.render(str(game.highscore), 0, white)
 
+    newFont6=pygame.font.Font("Retro.ttf", 65)
+    newText6=newFont6.render(str(game.level), 0, white)
+
 
 
     game.screen.blit(map,(0,0))
@@ -405,6 +426,7 @@ def draw_game(game):
     game.screen.blit(newText5, (85,250))
     game.screen.blit(kills, (-10, 225))
     game.screen.blit(banner, (385, 25))
+    game.screen.blit(newText6, (625,45))
 
     #Platform
     if treasure.health == 0:
@@ -496,6 +518,7 @@ def draw_game(game):
                     print("Fjern")
                     enemy.health -= 5
                     game.player_bullets.remove(bullet)
+                    break
 
     for enemy in game.enemy_list:
         enemy.update()
@@ -503,8 +526,10 @@ def draw_game(game):
             game.highscore +=1
             game.enemy_list.remove(enemy)
 
-    if len(game.enemy_list) == 0:
-        pass
+    game.zombie_spawner()
+
+
+
 #forLop for enemy2_bullet
     # for bullet in game.enemy2_bullets:
     #     if bullet.speed > 0:
