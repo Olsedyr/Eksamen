@@ -483,7 +483,7 @@ def draw_game(game):
         if not game.thread.is_alive():
             game.thread=myThread(5)
             game.thread.start()
-            treasure.health = 200
+            treasure.health = 1000
             healing.times -=1
         else:
             print("nooooooooooooo")
