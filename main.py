@@ -331,6 +331,7 @@ banner = pygame.image.load(path7)
 banner = pygame.transform.scale(banner,(500,100))
 
 
+
 # Text Renderer
 def text_format(message, textFont, textSize, textColor):
     newFont=pygame.font.Font(textFont, textSize)
@@ -494,7 +495,7 @@ def draw_game(game):
 
 
 
-
+#Tjekker om spilleren har købtnyt våben
 
 
 
