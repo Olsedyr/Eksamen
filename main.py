@@ -23,6 +23,7 @@ class Game():
         self.level = 0
         self.zombieque = 0
         self.enemy_list = []
+        self.boss_list = []
         self.spawner_cooldown = 0
     #    self.enemy2_bullets=[]
 
@@ -89,7 +90,7 @@ class Enemy1():
     def __init__(self):
         self.walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
         self.walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
-        self.attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+    #    self.attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
         self.x = 0
         self.y = 645
         self.width = 32
@@ -127,11 +128,6 @@ class Enemy1():
             self.hitbox = (self.x + 10, self.y + 2, 31, 57)
 
             #pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2) Tegn hitbox
-
-
-
-
-
     def update(self):
         if self.vel > 0:
             if self.x < self.path[1] + self.vel:
@@ -158,6 +154,82 @@ class Enemy1():
 
             if self.x==600 and self.hit==True and self.walkCount==6:
                 treasure.health -=5
+
+
+
+
+
+
+
+
+
+class Boss():
+    def __init__(self):
+        self.walkRight = [pygame.image.load('boss/R1.png'), pygame.image.load('boss/R2.png'), pygame.image.load('boss/R3.png'), pygame.image.load('boss/R4.png'), pygame.image.load('boss/R5.png'), pygame.image.load('boss/R6.png'), pygame.image.load('boss/R7.png'), pygame.image.load('boss/R8.png')]
+    #    self.walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
+    #    self.attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
+        self.x = 0
+        self.y = 645
+        self.width = 32
+        self.height = 32
+        self.path = [self.x, 601]  # Her bestemmer jeg hvor fjenden starter og slutter
+        self.walkCount = 0
+        self.hitCount = 0
+        self.vel = 1
+        self.hit=False
+        self.health = 500
+        self.visible = True
+        self.hitbox = (self.x + 17, self.y + 2, 31, 57) #hitbox
+
+
+
+
+
+    def draw_boss(self):
+        self.update()
+        if self.visible:
+            if self.walkCount + 1 >= 33:
+                self.walkCount = 0
+
+            if self.vel > 0:
+                game.screen.blit(self.walkRight[self.walkCount//3], (self.x,self.y))
+                self.walkCount += 1
+
+#Tegner healthbar
+            pygame.draw.rect(game.screen, (0,255,0), (self.hitbox[0], self.hitbox[1] - 20, self.health, 10))
+
+            self.hitbox = (self.x + 10, self.y + 2, 31, 57)
+
+            #pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2) Tegn hitbox
+
+    def update(self):
+        if self.vel > 0:
+            if self.x < self.path[1] + self.vel:
+                self.x += self.vel
+            else:
+                self.vel = self.vel * -1
+                self.x += self.vel
+                self.walkCount = 0
+        else:
+            if self.x > self.path[0] - self.vel:
+                self.x += self.vel
+            else:
+                self.vel = self.vel * -1
+                self.x += self.vel
+                self.walkCount = 0
+
+            if self.hitCount +1 >= 12:
+                self.hitCount = 0
+
+            if self.x == 600:
+                self.vel=0
+                self.hitCount+=1
+                self.hit=True
+
+            if self.x==600 and self.hit==True and self.walkCount==6:
+                treasure.health -=50
+
+
 
 
 
@@ -330,6 +402,10 @@ path7 = os.path.join(dir,"Pictures/banner.png")
 banner = pygame.image.load(path7)
 banner = pygame.transform.scale(banner,(500,100))
 
+path8 = os.path.join(dir,"Pictures/scoreboard.png")
+scoreboard = pygame.image.load(path8)
+scoreboard = pygame.transform.scale(scoreboard,(200,300))
+
 
 
 # Text Renderer
@@ -428,6 +504,7 @@ def draw_game(game):
     game.screen.blit(kills, (-10, 225))
     game.screen.blit(banner, (385, 25))
     game.screen.blit(newText6, (625,45))
+    game.screen.blit(scoreboard, (1050,30))
 
     #Platform
     if treasure.health == 0:
@@ -530,6 +607,40 @@ def draw_game(game):
     game.zombie_spawner()
 
 
+#Tjekker highscores
+    if game.highscore >= 25 and game.highscore < 50:
+        player.attackR = pygame.image.load('player/waterball2.png')
+        player.attackR = pygame.transform.scale(player.attackR, (32, 36))
+
+        player.attackL = pygame.image.load('player/waterball.png')
+        player.attackL = pygame.transform.scale(player.attackL, (32, 36))
+
+        Bullets.damage = 20
+
+
+    if game.highscore >= 50 and game.highscore < 75:
+        player.attackR = pygame.image.load('player/plasmaball2.png')
+        player.attackR = pygame.transform.scale(player.attackR, (32, 36))
+
+        player.attackL = pygame.image.load('player/plasmaball.png')
+        player.attackL = pygame.transform.scale(player.attackL, (32, 36))
+
+        Bullets.damage = 30
+
+
+    if game.highscore >= 75:
+        player.attackR = pygame.image.load('player/greenball2.png')
+        player.attackR = pygame.transform.scale(player.attackR, (32, 36))
+
+        player.attackL = pygame.image.load('player/greenball.png')
+        player.attackL = pygame.transform.scale(player.attackL, (32, 36))
+
+        Bullets.damage = 45
+
+
+
+    if game.level == 3:
+        Boss.draw_boss()
 
 #forLop for enemy2_bullet
     # for bullet in game.enemy2_bullets:
