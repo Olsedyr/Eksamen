@@ -20,7 +20,7 @@ class Game():
         self.thread=myThread(0.1)
         self.thread.start()
         self.player_bullets=[]
-        self.ammo = 56
+        self.ammo = 90
         self.level = 0
         self.zombieque = 0
         self.enemy_list = []
@@ -342,6 +342,11 @@ ammo = pygame.image.load(path9)
 ammo = pygame.transform.scale(ammo,(72,84))
 
 
+path10 = os.path.join(dir,"Pictures/ammochest.png")
+ammo_chest = pygame.image.load(path10)
+ammo_chest = pygame.transform.scale(ammo_chest,(100,86))
+
+
 
 # Text Renderer
 def text_format(message, textFont, textSize, textColor):
@@ -410,7 +415,7 @@ def draw_game(game):
 
     pygame.event.pump()
 
-    print(game.ammo)
+    print(player.x, player.y)
 
 
 
@@ -447,6 +452,7 @@ def draw_game(game):
     game.screen.blit(scoreboard, (1050,30))
     game.screen.blit(ammo, (25,325))
     game.screen.blit(newText7, (105,365))
+    game.screen.blit(ammo_chest, (375,395))
 
     #Platform
     if treasure.health < 0:
@@ -514,7 +520,10 @@ def draw_game(game):
 
 
 
-#Tjekker om spilleren har købtnyt våben
+#Tjekker om spilleren er ved ammokassen
+
+    if player.x > 365 and player.x < 405 and player.y == 410:
+        game.ammo = 90
 
 
 
