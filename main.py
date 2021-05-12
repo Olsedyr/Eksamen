@@ -337,6 +337,10 @@ path8 = os.path.join(dir,"Pictures/scoreboard.png")
 scoreboard = pygame.image.load(path8)
 scoreboard = pygame.transform.scale(scoreboard,(200,300))
 
+path9 = os.path.join(dir,"Pictures/bullet.png")
+ammo = pygame.image.load(path9)
+ammo = pygame.transform.scale(ammo,(72,84))
+
 
 
 # Text Renderer
@@ -426,6 +430,9 @@ def draw_game(game):
     newFont6=pygame.font.Font("Retro.ttf", 65)
     newText6=newFont6.render(str(game.level), 0, white)
 
+    newFont7=pygame.font.Font("Retro.ttf", 42)
+    newText7=newFont7.render(str(game.ammo), 0, white)
+
 
 
     game.screen.blit(map,(0,0))
@@ -438,6 +445,8 @@ def draw_game(game):
     game.screen.blit(banner, (385, 25))
     game.screen.blit(newText6, (625,45))
     game.screen.blit(scoreboard, (1050,30))
+    game.screen.blit(ammo, (25,325))
+    game.screen.blit(newText7, (105,365))
 
     #Platform
     if treasure.health < 0:
