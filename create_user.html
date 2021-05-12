@@ -1,0 +1,254 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Opret ny profil</title>
+    <h1>Opret din bruger</h1>
+
+    <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Style inputs */
+    input[type=text], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type=password], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+
+
+
+    input[type=email], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type=tel], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+
+
+    input[type=submit] {
+      background-color: #262626;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      cursor: pointer;
+    }
+    .alert {
+      padding: 12px;
+      border-radius: 3px;
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      border-width: 2px;
+      border-style: solid;
+    }
+
+    .alert-error {
+      border-color: darkred;
+      background-color: red;
+      color: white;
+    }
+
+
+    input[type="date"] {
+         -webkit-align-items: center;
+         display: -webkit-inline-flex;
+         font-family: arial;
+         overflow: hidden;
+         padding: 12px 10px;
+         -webkit-padding-start: 1px;
+    }
+
+    input::-webkit-datetime-edit {
+        -webkit-flex: 1;
+        -webkit-user-modify: read-only !important;
+        display: inline-block;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    input::-webkit-datetime-edit-fields-wrapper {
+        -webkit-user-modify: read-only !important;
+        display: inline-block;
+        padding: 1px 0;
+        white-space: pre;
+    }
+
+    input[type="radio"] {
+        background-color: #ddd;
+        background-image: -webkit-linear-gradient(0deg, transparent 20%, hsla(0,0%,100%,.7), transparent 80%),
+                          -webkit-linear-gradient(90deg, transparent 20%, hsla(0,0%,100%,.7), transparent 80%);
+        border-radius: 10px;
+        box-shadow: inset 0 1px 1px hsla(0,0%,100%,.8),
+                    0 0 0 1px hsla(0,0%,0%,.6),
+                    0 2px 3px hsla(0,0%,0%,.6),
+                    0 4px 3px hsla(0,0%,0%,.4),
+                    0 6px 6px hsla(0,0%,0%,.2),
+                    0 10px 6px hsla(0,0%,0%,.2);
+        cursor: pointer;
+        display: inline-block;
+        height: 15px;
+        margin-right: 15px;
+        position: relative;
+        width: 15px;
+        -webkit-appearance: none;
+    }
+    input[type="radio"]:after {
+        background-color: #000;
+        border-radius: 25px;
+        box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.4),
+                    0 1px 1px hsla(0,0%,100%,.8);
+        content: '';
+        display: block;
+        height: 7px;
+        left: 4px;
+        position: relative;
+        top: 4px;
+        width: 7px;
+    }
+
+    input[type="radio"]:checked:after {
+        background-color: #f66;
+        box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.4),
+                    inset 0 2px 2px hsla(0,0%,100%,.4),
+                    0 1px 1px hsla(0,0%,100%,.8),
+                    0 0 2px 2px hsla(0,70%,70%,.4);
+
+}
+
+
+    .alert-info {
+      border-color: orange;
+      background-color: yellow;
+      color: black;
+    }
+    </style>
+  </head>
+  {% if error == None: %}
+  <body>
+
+    <img src="https://www.pngkit.com/png/full/930-9307252_ms3-wide-big-data-page-graphic-big-data.png" width=100% height=18%>
+
+    <form action="create_new_user" method="post">
+      <p>Skriv dit fornavn:</p>
+      <input type="text" id="fname" name="fname"><br><br>
+
+
+      <p>Skriv dit efternavn:</p>
+      <input type="text" id="lname" name="lname"><br><br>
+
+
+      <p>Skriv din Email:</p>
+      <input type="email" name="email" value=""><br><br>
+
+
+      <p>Skriv dit telefon nummer:</p>
+      <input type="tel" id="phone" name="phone"><br><br>
+
+
+      <p>Vælg dit køn</p>
+      <input type="radio" id="male" name="gender" value="male">
+      <label for="male">Mand</label><br>
+      <input type="radio" id="female" name="gender" value="female">
+      <label for="female">Kvinde</label><br>
+      <input type="radio" id="other" name="gender" value="other">
+      <label for="other">Andet</label>
+
+
+      <p>Intast din føselsdagsdato:</p>
+      <input type="date" id="birthday" name="birthday"><br><br>
+
+      <p>Intast din adgangskode:</p>
+      <input type="password" id="password1" name="password1"><br><br>
+      <p>Intast din adgangskode igen:</p>
+      <input type="password" id="password2" name="password2"><br><br>
+
+      <input type="submit" value="Opret Bruger">
+    </form>
+    {% else: %}
+      <div class="alert-error">Error: {{ error }}</div>
+      <form action="create_new_user" method="post">
+        <p>Skriv dit fornavn:</p>
+        <input type="text" id="fname" name="fname"><br><br>
+
+
+        <p>Skriv dit efternavn:</p>
+        <input type="text" id="lname" name="lname"><br><br>
+
+
+        <p>Skriv din Email:</p>
+        <input type="email" name="email" value=""><br><br>
+
+
+        <p>Skriv dit telefon nummer:</p>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{8}|[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}|[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}"><br><br>
+
+
+        <p>Vælg dit køn</p>
+        <input type="radio" id="male" name="gender" value="Mand">
+        <label for="male">Mand</label><br>
+        <input type="radio" id="female" name="gender" value="Kvind">
+        <label for="female">Kvinde</label><br>
+        <input type="radio" id="other" name="gender" value="Udefineret aka. Taber">
+        <label for="other">Andet</label>
+
+
+        <p>Intast din føselsdagsdato:</p>
+        <input type="date" id="birthday" name="birthday"><br><br>
+
+        <p>Intast din adgangskode:</p>
+        <input type="password" id="password1" name="password1"><br><br>
+        <p>Intast din adgangskode igen:</p>
+        <input type="password" id="password2" name="password2"><br><br>
+
+        <input type="submit" value="Opret Bruger">
+      </form>
+      {% endif %}
+  </body>
+</html>
+{% endblock content %}

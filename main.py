@@ -20,6 +20,7 @@ class Game():
         self.thread=myThread(0.1)
         self.thread.start()
         self.player_bullets=[]
+        self.ammo = 56
         self.level = 0
         self.zombieque = 0
         self.enemy_list = []
@@ -71,10 +72,12 @@ class Bullets():
         self.x += self.speed
 
     def new_player_bullet(game, player):
-        if len(game.player_bullets) > 8:
+        if len(game.player_bullets) > 8 or game.ammo == 0:
             pass
         else:
             game.player_bullets.append(Bullets(x=player.x, y=player.y, right=player.right))
+            game.ammo -=1
+
 
     # def new_enemy2_bullet(game, enemy2):
     #     if len(game.enemy2_bullets) > 0:
@@ -254,6 +257,8 @@ class Player():
             Bullets.new_player_bullet(game, player)
 
 
+
+
     def player_draw(self):
         if player.walkCount +1 >= 27:
             player.walkCount = 0
@@ -401,6 +406,8 @@ def draw_game(game):
 
     pygame.event.pump()
 
+    print(game.ammo)
+
 
 
 
@@ -433,7 +440,7 @@ def draw_game(game):
     game.screen.blit(scoreboard, (1050,30))
 
     #Platform
-    if treasure.health == 0:
+    if treasure.health < 0:
         game.tilstand=2
 
 
