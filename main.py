@@ -415,11 +415,6 @@ def draw_game(game):
 
     pygame.event.pump()
 
-    print(player.x, player.y)
-
-
-
-
     newFont2=pygame.font.Font("Retro.ttf", 42)
     newText2=newFont2.render(str(player.health), 0, white)
 
@@ -493,7 +488,7 @@ def draw_game(game):
     if player.x > 750 and player.y <=410:
         player.y=640
         player.health -= 15
-    if player.x <=260 and player.y <=410:
+    elif player.x <=260 and player.y <=410:
         player.y=640
         player.health -= 20
 
