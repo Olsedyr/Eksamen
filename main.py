@@ -1,10 +1,8 @@
 import pygame
-from pygame.locals import *
 import os
 import threading
 import time
-import math
-import random
+
 
 
 class Game():
@@ -17,7 +15,7 @@ class Game():
         self.clock = pygame.time.Clock()
         self.FPS=30
         self.highscore = 0
-        self.thread=myThread(0.1)
+        self.thread = myThread(0.1)
         self.thread.start()
         self.player_bullets=[]
         self.ammo = 90
@@ -92,7 +90,6 @@ class Enemy1():
     def __init__(self):
         self.walkRight = [pygame.image.load('enemies/R1E.png'), pygame.image.load('enemies/R2E.png'), pygame.image.load('enemies/R3E.png'), pygame.image.load('enemies/R4E.png'), pygame.image.load('enemies/R5E.png'), pygame.image.load('enemies/R6E.png'), pygame.image.load('enemies/R7E.png'), pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
         self.walkLeft = [pygame.image.load('enemies/L1E.png'), pygame.image.load('enemies/L2E.png'), pygame.image.load('enemies/L3E.png'), pygame.image.load('enemies/L4E.png'), pygame.image.load('enemies/L5E.png'), pygame.image.load('enemies/L6E.png'), pygame.image.load('enemies/L7E.png'), pygame.image.load('enemies/L8E.png'), pygame.image.load('enemies/L9E.png'), pygame.image.load('enemies/L10E.png'), pygame.image.load('enemies/L11E.png')]
-    #    self.attack = [pygame.image.load('enemies/R8E.png'), pygame.image.load('enemies/R9E.png'), pygame.image.load('enemies/R10E.png'), pygame.image.load('enemies/R11E.png')]
         self.x = 0
         self.y = 645
         self.width = 32
@@ -130,6 +127,8 @@ class Enemy1():
             self.hitbox = (self.x + 10, self.y + 2, 31, 57)
 
             #pygame.draw.rect(game.screen, (255,0,0), self.hitbox,2) Tegn hitbox
+
+
     def update(self):
         if self.vel > 0:
             if self.x < self.path[1] + self.vel:
