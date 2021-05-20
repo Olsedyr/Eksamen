@@ -221,7 +221,7 @@ class Player():
         self.attackL = pygame.image.load('player/fireball2.png')
         self.attackL = pygame.transform.scale(self.attackL, (32, 36))
 
-        self.health = 100
+        #self.health = 100
         self.vel = 5
         self.vel2 = 1
         self.x = 1200
@@ -486,7 +486,7 @@ def draw_game(game):
         player.health -= 15
     elif player.x <=260 and player.y <=410:
         player.y=640
-        player.health -= 20
+        #player.health -= 20
 
 
 
