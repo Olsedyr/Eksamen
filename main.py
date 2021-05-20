@@ -411,8 +411,8 @@ def draw_game(game):
 
     pygame.event.pump()
 
-    newFont2=pygame.font.Font("Retro.ttf", 42)
-    newText2=newFont2.render(str(player.health), 0, white)
+#    newFont2=pygame.font.Font("Retro.ttf", 42)
+#    newText2=newFont2.render(str(player.health), 0, white)
 
     newFont3=pygame.font.Font("Retro.ttf", 42)
     newText3=newFont3.render(str(healing.times), 0, white)
@@ -452,8 +452,8 @@ def draw_game(game):
 
 
 #Tjekker playerens Health
-    if player.health == 0:
-        game.tilstand=2
+    #if player.health == 0:
+    #    game.tilstand=2
 
 
 
@@ -483,7 +483,7 @@ def draw_game(game):
 #Tjekker om spileren er uden for platformen
     if player.x > 750 and player.y <=410:
         player.y=640
-        player.health -= 15
+        #player.health -= 15
     elif player.x <=260 and player.y <=410:
         player.y=640
         #player.health -= 20
